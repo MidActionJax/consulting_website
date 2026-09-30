@@ -69,6 +69,7 @@ h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
 ul[role="list"], ol { list-style: none; padding: 0; }
 a { color: var(--aurora-teal); text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+[hidden] { display: none !important; }
 em { font-style: italic; }
 strong { color: var(--text-hi); font-weight: 600; }
 ::selection { background: rgba(61, 220, 208, 0.3); color: var(--text-hi); }

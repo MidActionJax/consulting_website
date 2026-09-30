@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://midactionjax.github.io/consulting_website/sitemap.xml

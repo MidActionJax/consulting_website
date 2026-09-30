@@ -6,54 +6,154 @@
   <title>Page not found | Jaxon Doolittle</title>
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#05070f">
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <meta name="color-scheme" content="dark">
+  <!-- Self-contained on purpose: GitHub Pages serves this file at any missing URL depth,
+       so relative links to styles.css or assets/ would break. Everything it needs is inline. -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233ddcd0'/%3E%3Cstop offset='.55' stop-color='%239500dc'/%3E%3Cstop offset='1' stop-color='%23de239e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='%2305070f'/%3E%3Ccircle cx='32' cy='32' r='22' fill='url(%23g)'/%3E%3Ccircle cx='32' cy='32' r='26.5' fill='none' stroke='%23fff' stroke-opacity='.9' stroke-width='2.5'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
-  <!-- Root-relative paths so this page styles correctly at any missing URL depth.
-       If the site is served from a project subpath (username.github.io/repo/), change "/" to "/repo/". -->
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@600..700&family=JetBrains+Mono:wght@500&display=swap">
   <style>
-    .nf { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
-    .nf__card { max-width: 560px; width: 100%; padding: clamp(36px, 7vw, 56px); text-align: center; overflow: hidden; }
-    .nf__code {
-      font-family: var(--font-mono); font-size: clamp(4rem, 16vw, 6.5rem); font-weight: 500;
-      line-height: 1; letter-spacing: -0.05em; margin-bottom: 20px;
-      background: linear-gradient(120deg, var(--aurora-crimson) 10%, var(--aurora-pink) 90%);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      filter: drop-shadow(0 0 28px rgba(209, 46, 83, 0.45));
+    :root {
+      --bg-0: #05070f;
+      --bg-1: #0a1024;
+      --aurora-teal: #3ddcd0;
+      --aurora-violet: #9500dc;
+      --aurora-magenta: #ce00ff;
+      --aurora-pink: #de239e;
+      --aurora-plum: #ab1a79;
+      --aurora-crimson: #d12e53;
+      --text-hi: #f1f5ff;
+      --text-mid: #b6c0da;
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-highlight: rgba(255, 255, 255, 0.22);
+      --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .nf__card h1 { font-size: clamp(1.6rem, 4.5vw, 2.1rem); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 32px; text-wrap: balance; }
-    .nf__glow { position: absolute; left: 50%; top: 0; width: 80%; height: 70%; transform: translate(-50%, -55%);
-      border-radius: 50%; background: radial-gradient(closest-side, rgba(209, 46, 83, 0.3), transparent); pointer-events: none; }
-    .nf__card > *:not(.nf__glow):not(.corner) { position: relative; }
-    .nf .corner { border-color: rgba(209, 46, 83, 0.8); }
-    .nf .blob--pink { opacity: 0.3; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      color: var(--text-mid);
+      background: radial-gradient(120% 80% at 50% 0%, var(--bg-1) 0%, var(--bg-0) 60%) fixed, var(--bg-0);
+      -webkit-font-smoothing: antialiased;
+    }
+    :focus-visible { outline: 2px solid var(--aurora-teal); outline-offset: 3px; border-radius: 6px; }
+
+    .sky { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(90px); will-change: transform; animation: drift 55s ease-in-out infinite alternate; }
+    .b1 { width: 56vw; height: 46vw; top: -16vw; left: -14vw; opacity: .4; background: radial-gradient(closest-side, var(--aurora-teal), transparent); animation-duration: 48s; }
+    .b2 { width: 54vw; height: 48vw; top: -18vw; right: -16vw; opacity: .42; background: radial-gradient(closest-side, var(--aurora-violet), transparent); animation-duration: 62s; animation-direction: alternate-reverse; }
+    .b3 { width: 46vw; height: 40vw; bottom: -18vw; right: -12vw; opacity: .3; background: radial-gradient(closest-side, var(--aurora-crimson), transparent); animation-duration: 58s; }
+    .b4 { width: 58vw; height: 44vw; bottom: -20vw; left: -16vw; opacity: .3; background: radial-gradient(closest-side, var(--aurora-plum), transparent); animation-duration: 66s; animation-direction: alternate-reverse; }
+    @keyframes drift {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(8vw, 5vw, 0) scale(1.12); }
+      100% { transform: translate3d(-4vw, 9vw, 0) scale(.94); }
+    }
+
+    .nf { position: relative; min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+      padding: clamp(36px, 7vw, 56px);
+      text-align: center;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)), rgba(8, 11, 26, .62);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      box-shadow: inset 0 1px 0 var(--glass-highlight), 0 20px 50px -20px rgba(0,0,0,.6);
+    }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .card { background: rgba(16, 22, 44, .92); }
+    }
+    .glow {
+      position: absolute; left: 50%; top: 0; width: 80%; height: 70%;
+      transform: translate(-50%, -55%); border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(209, 46, 83, .3), transparent);
+      pointer-events: none;
+    }
+    .card > *:not(.glow):not(.corner) { position: relative; }
+    .code {
+      margin: 0 0 20px;
+      font-family: var(--font-mono);
+      font-size: clamp(4rem, 16vw, 6.5rem);
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -.05em;
+      background: linear-gradient(120deg, var(--aurora-crimson) 10%, var(--aurora-pink) 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 28px rgba(209, 46, 83, .45));
+    }
+    h1 {
+      margin: 0 0 32px;
+      font-size: clamp(1.6rem, 4.5vw, 2.1rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+      color: var(--text-hi);
+      text-wrap: balance;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 52px; padding: 0 26px; border-radius: 999px;
+      font-weight: 600; font-size: 1rem; text-decoration: none;
+      color: #05070f;
+      background: linear-gradient(120deg, var(--aurora-teal) 0%, var(--aurora-magenta) 62%, var(--aurora-pink) 100%);
+      background-size: 160% 100%;
+      box-shadow: 0 8px 24px -10px rgba(61, 220, 208, .55), inset 0 1px 0 rgba(255,255,255,.45);
+      transition: transform 200ms var(--ease), box-shadow 250ms ease-out, background-position 600ms var(--ease);
+    }
+    .btn:hover {
+      background-position: 100% 50%;
+      transform: translateY(-1px);
+      box-shadow: 0 0 30px rgba(61, 220, 208, .4), 0 0 60px rgba(222, 35, 158, .25), inset 0 1px 0 rgba(255,255,255,.45);
+    }
+    .corner { position: absolute; width: 12px; height: 12px; border: 0 solid rgba(209, 46, 83, .8); pointer-events: none; }
+    .tl { top: 10px; left: 10px; border-top-width: 1px; border-left-width: 1px; }
+    .tr { top: 10px; right: 10px; border-top-width: 1px; border-right-width: 1px; }
+    .bl { bottom: 10px; left: 10px; border-bottom-width: 1px; border-left-width: 1px; }
+    .br { bottom: 10px; right: 10px; border-bottom-width: 1px; border-right-width: 1px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blob { animation: none; }
+      .btn { transition: none; }
+    }
   </style>
 </head>
 <body>
   <div class="sky" aria-hidden="true">
-    <div class="stars"></div>
-    <div class="aurora">
-      <span class="blob blob--teal"></span>
-      <span class="blob blob--violet"></span>
-      <span class="blob blob--magenta"></span>
-      <span class="blob blob--pink"></span>
-      <span class="blob blob--plum"></span>
-    </div>
-    <div class="grain"></div>
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <span class="blob b3"></span>
+    <span class="blob b4"></span>
   </div>
   <main class="nf">
-    <div class="nf__card glass">
-      <span class="nf__glow" aria-hidden="true"></span>
-      <p class="nf__code" aria-hidden="true">404</p>
+    <div class="card">
+      <span class="glow" aria-hidden="true"></span>
+      <p class="code" aria-hidden="true">404</p>
       <h1>This page failed silently. Unlike your pipeline will.</h1>
-      <a class="btn btn--primary" href="/">Back to the homepage</a>
-      <span class="corner corner--tl"></span><span class="corner corner--tr"></span>
-      <span class="corner corner--bl"></span><span class="corner corner--br"></span>
+      <a class="btn" id="home" href="/">Back to the homepage</a>
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
     </div>
   </main>
+  <script>
+    // On a github.io project site the homepage lives under /<repo>/, not at the domain root.
+    (function () {
+      var parts = location.pathname.split('/').filter(Boolean);
+      if (/\.github\.io$/i.test(location.hostname) && parts.length) {
+        document.getElementById('home').setAttribute('href', '/' + parts[0] + '/');
+      }
+    })();
+  </script>
 </body>
 </html>

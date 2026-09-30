@@ -194,6 +194,18 @@
     });
   });
 
+  /* ---------- One pager: hide the download links until the PDF is uploaded ---------- */
+  var onePagers = document.querySelectorAll('[data-onepager]');
+  if (onePagers.length && /^https?:$/.test(location.protocol) && window.fetch) {
+    fetch(onePagers[0].getAttribute('href'), { method: 'HEAD', cache: 'no-store' }).then(function (res) {
+      if (res.ok) return;
+      onePagers.forEach(function (a) {
+        var li = a.parentElement && a.parentElement.tagName === 'LI' ? a.parentElement : null;
+        (li || a).hidden = true;
+      });
+    }, function () { /* network error: leave the links alone */ });
+  }
+
   /* ---------- Hero particle field (solar wind) ---------- */
   var canvas = document.querySelector('.hero__particles');
   if (canvas && !prefersReduced && canvas.getContext) {
