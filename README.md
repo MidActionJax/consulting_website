@@ -7,7 +7,7 @@ Live at **https://jaxondoolittle.com/** (GitHub Pages from `main`, custom domain
 ```
 index.html        page markup and copy
 styles.css        "Aurora glass" design system
-main.js           nav, reveals, count-ups, copy button, particle field
+main.js           nav, reveals, count-ups, contact form, adaptive quality, particle field
 404.html          not-found page, fully self-contained so it works at any URL depth
 assets/           favicon.svg, apple-touch-icon.png, og-image.png, Capability_Statement_Doolittle.pdf
 robots.txt        crawler rules
@@ -16,10 +16,11 @@ sitemap.xml       one-page sitemap
 CNAME             custom domain for GitHub Pages (added on GitHub, keep it)
 ```
 
+The contact form posts to Formspree (form `meaodvov`, formspree.io dashboard) and lands in Gmail.
+
 ## Still to do
 
 - [ ] **Headshot (optional).** Save a square photo of at least 600px as `assets/headshot.webp` and swap it in where the `[PLACEHOLDER: headshot]` comment sits in the About section. Until then the "JD" initials show.
-- [ ] **Connect the contact form.** Create a free form at formspree.io using your Gmail address, copy its form ID (the part after `/f/`), and replace `YOUR_FORM_ID` in the contact form's `action` in `index.html`. Until then, submitting opens the visitor's email app with the message filled in.
 - [ ] **Enforce HTTPS.** Settings → Pages → tick "Enforce HTTPS" once GitHub has issued the certificate for jaxondoolittle.com.
 - [ ] **Writing section.** Not in v1 (spec 3.9). Add it only after rereading the article for University of Michigan specifics.
 - [ ] **Expert reviewer line.** Commented out in the About section. Uncomment it once it's confirmed in writing.
