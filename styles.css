@@ -1029,8 +1029,9 @@ h3 {
 }
 .program-card__role {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 9px;
+  line-height: 1.5;
   font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 500;
@@ -1041,6 +1042,7 @@ h3 {
 .program-card__dot {
   flex: none;
   width: 6px; height: 6px;
+  margin-top: calc(0.75em - 3px); /* centred on the first line when the role wraps */
   border-radius: 50%;
   background: var(--aurora-teal);
   box-shadow: 0 0 10px var(--aurora-teal);
@@ -1050,6 +1052,10 @@ h3 {
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--text-mid);
+}
+
+@media (max-width: 559px) {
+  .program-card__role { letter-spacing: 0.07em; }
 }
 
 /* Carousel: one card in focus, neighbours set back and dimmed */

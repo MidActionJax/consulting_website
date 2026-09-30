@@ -16,20 +16,20 @@
   var PROGRAM_NETWORKS = [
     {
       org: "Hawaii Technology Development Corporation", state: "HI",
-      role: "Technical Provider",
-      detail: "On the roster Hawaii's SBIR and STTR companies draw on for technical help.",
+      role: "Listed Technical Expert",
+      detail: "Named on the list Hawaii founders use to find technical help for SBIR work.",
       confirmed: false,
     },
     {
       org: "Wisconsin Center for Technology Commercialization", state: "WI",
       role: "Expert Panel Reviewer",
-      detail: "Reviews SBIR proposals on pre-submission panels, before they reach the agency.",
+      detail: "Sits on expert panels that pressure-test SBIR proposals before they're submitted.",
       confirmed: false,
     },
     {
       org: "Arizona Commerce Authority", state: "AZ",
-      role: "Technical Referral",
-      detail: "Recommended to Arizona founders who need a technical lead on SBIR work.",
+      role: "Recommended Technical Expert",
+      detail: "Arizona founders are pointed my way when their SBIR work needs a technical lead.",
       confirmed: false,
     },
   ];
