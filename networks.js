@@ -1,15 +1,18 @@
-/* Program networks: credibility strip under the hero chips.
-   The section is built here from the list below. If no entry is confirmed,
-   nothing is added to the page at all: no heading, no empty state. */
+/* "Selected by SBIR programs": a client-wall style band under the hero chips.
+   Built here from the list below. If no entry is confirmed, nothing is added
+   to the page at all: no heading, no empty state. */
 (function () {
   'use strict';
 
   // Set confirmed to true ONLY after the program has confirmed the role in writing
   // AND agreed to being named on this site. Text only: no logos, seals or images.
+  //   org:   the program's full name, shown large
+  //   state: two-letter state code, shown in a small badge above the name
+  //   label: your role with that program
   var PROGRAM_NETWORKS = [
-    { label: "Listed technical provider", org: "Hawaii Technology Development Corporation", confirmed: false },
-    { label: "Expert reviewer, SBIR pre-submission panels", org: "Wisconsin Center for Technology Commercialization", confirmed: false },
-    { label: "Referral resource, SBIR programs", org: "Arizona Commerce Authority", confirmed: false },
+    { org: "Hawaii Technology Development Corporation", state: "HI", label: "Listed technical provider", confirmed: false },
+    { org: "Wisconsin Center for Technology Commercialization", state: "WI", label: "Expert panel reviewer", confirmed: false },
+    { org: "Arizona Commerce Authority", state: "AZ", label: "SBIR referral resource", confirmed: false },
   ];
 
   var confirmed = PROGRAM_NETWORKS.filter(function (n) { return n.confirmed === true; });
@@ -27,27 +30,29 @@
 
   var section = el('section', 'networks reveal');
   section.setAttribute('aria-labelledby', 'networks-title');
+  section.style.setProperty('--n', Math.min(confirmed.length, 4));
 
-  var strip = el('div', 'networks__strip glass');
-  var eyebrow = el('p', 'eyebrow networks__eyebrow', '// PROGRAM NETWORKS');
+  var band = el('div', 'networks__band glass');
+  band.appendChild(el('span', 'networks__sheen')).setAttribute('aria-hidden', 'true');
+
+  var eyebrow = el('p', 'networks__eyebrow', '// SELECTED BY SBIR PROGRAMS');
   eyebrow.id = 'networks-title';
-  strip.appendChild(eyebrow);
+  band.appendChild(eyebrow);
 
-  var list = el('ul', 'networks__list');
-  list.setAttribute('role', 'list');
+  var row = el('ul', 'networks__row');
+  row.setAttribute('role', 'list');
   confirmed.forEach(function (n) {
-    var item = el('li', 'network-chip');
-    var dot = el('span', 'network-chip__dot');
-    dot.setAttribute('aria-hidden', 'true');
-    var text = el('span', 'network-chip__text');
-    text.appendChild(el('span', 'network-chip__org', n.org));
-    text.appendChild(el('span', 'network-chip__label', n.label));
-    item.appendChild(dot);
-    item.appendChild(text);
-    list.appendChild(item);
+    var item = el('li', 'network');
+    if (n.state) item.appendChild(el('span', 'network__state', n.state));
+    item.appendChild(el('span', 'network__org', n.org));
+    var role = el('span', 'network__role');
+    role.appendChild(el('span', 'network__dot')).setAttribute('aria-hidden', 'true');
+    role.appendChild(document.createTextNode(n.label));
+    item.appendChild(role);
+    row.appendChild(item);
   });
-  strip.appendChild(list);
-  section.appendChild(strip);
+  band.appendChild(row);
+  section.appendChild(band);
 
   // Joins the hero grid so it sits directly below the credibility chips on every
   // screen size (see .hero--networks in styles.css), above "The problem"

@@ -8,7 +8,7 @@ Live at **https://jaxondoolittle.com/** (GitHub Pages from `main`, custom domain
 index.html        page markup and copy
 styles.css        "Aurora glass" design system
 main.js           nav, reveals, count-ups, contact form, adaptive quality, particle field
-networks.js       "Program networks" strip under the hero, built from a list of entries
+networks.js       "Selected by SBIR programs" band under the hero, built from a list of entries
 404.html          not-found page, fully self-contained so it works at any URL depth
 assets/           favicon.svg, apple-touch-icon.png, og-image.png, Capability_Statement_Doolittle.pdf
 robots.txt        crawler rules
@@ -19,9 +19,9 @@ CNAME             custom domain for GitHub Pages (added on GitHub, keep it)
 
 The contact form posts to Formspree (form `meaodvov`, formspree.io dashboard) and lands in Gmail.
 
-## Program networks
+## Selected by SBIR programs
 
-Edit the `PROGRAM_NETWORKS` list at the top of `networks.js` and set an entry's `confirmed` to `true` to show it under the hero. Only do that once the program has confirmed the role in writing **and** agreed to being named on the site. With every entry `false`, the section does not appear at all.
+Edit the `PROGRAM_NETWORKS` list at the top of `networks.js` and set an entry's `confirmed` to `true` to show it in the band under the hero. Only do that once the program has confirmed the role in writing **and** agreed to being named on the site. With every entry `false`, the section does not appear at all.
 
 ## Still to do
 
