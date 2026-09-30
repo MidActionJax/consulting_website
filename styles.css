@@ -856,6 +856,70 @@ h3 {
 }
 @media (min-width: 1000px) and (min-height: 760px) { .scroll-cue { display: flex; } }
 
+/* ---------- Program networks strip (built by networks.js, only when confirmed) ---------- */
+.networks {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  grid-column: 1 / -1;
+}
+/* Phones: text, chips, then this strip, then the log card */
+.hero--networks .hero__copy { order: 0; }
+.hero--networks .networks { order: 1; }
+.hero--networks .hero__visual { order: 2; }
+/* Desktop: copy and log card side by side, strip full width underneath */
+@media (min-width: 1000px) {
+  .hero--networks .hero__copy { grid-row: 1; grid-column: 1; }
+  .hero--networks .hero__visual { grid-row: 1; grid-column: 2; }
+  .hero--networks .networks { grid-row: 2; }
+}
+.hero--networks .scroll-cue { display: none; }
+.networks__strip {
+  padding: 18px clamp(16px, 2.4vw, 24px) 20px;
+  border-radius: 18px;
+}
+.networks__eyebrow { margin-bottom: 14px; }
+.networks__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+@media (max-width: 559px) {
+  .networks__list { grid-template-columns: 1fr; }
+}
+.network-chip {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025)), rgba(8, 11, 26, 0.55);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+.network-chip__dot {
+  flex: none;
+  width: 6px; height: 6px;
+  margin-top: 0.55em;
+  border-radius: 50%;
+  background: var(--aurora-teal);
+  box-shadow: 0 0 8px var(--aurora-teal);
+}
+.network-chip__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.network-chip__org {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: var(--text-hi);
+}
+.network-chip__label {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-lo);
+}
+
 /* ---------- Problem cards ---------- */
 .icon {
   display: inline-grid;
