@@ -3,7 +3,12 @@
    the page at all: no heading, no empty state.
      1 confirmed   one featured card beside the headline
      2 confirmed   two cards side by side
-     3+ confirmed  a carousel: one card in focus, the others set back behind it */
+     3+ confirmed  a carousel: one card in focus, the others set back behind it
+   Optional extras on a confirmed entry:
+     featured  shown first, the carousel opens on it, and once the carousel is
+               active a pinned badge under the headline keeps it always visible
+     chip      adds a highlighted chip to the hero credibility chips
+     about     adds a line to the credentials list in the About section */
 (function () {
   'use strict';
 
@@ -13,6 +18,7 @@
   //   state:  two-letter state code (badge and background mark)
   //   role:   your role with the program, short
   //   detail: one line on what that role means
+  //   featured / chip / about: optional, see the top of this file
   var PROGRAM_NETWORKS = [
     {
       org: "Hawaii Technology Development Corporation", state: "HI",
@@ -24,6 +30,9 @@
       org: "Wisconsin Center for Technology Commercialization", state: "WI",
       role: "Expert Panel Reviewer",
       detail: "Sits on expert panels that pressure-test SBIR proposals before they're submitted.",
+      featured: true,
+      chip: "Expert SBIR panel reviewer",
+      about: "Selected as an expert reviewer for Wisconsin CTC's SBIR pre-submission panels",
       confirmed: true,
     },
     {
@@ -36,6 +45,10 @@
 
   var confirmed = PROGRAM_NETWORKS.filter(function (n) { return n.confirmed === true; });
   if (!confirmed.length) return;
+  // Featured programs go first, so they lead the pair and open the carousel
+  confirmed = confirmed.filter(function (n) { return n.featured; })
+    .concat(confirmed.filter(function (n) { return !n.featured; }));
+  var featured = confirmed.filter(function (n) { return n.featured; });
 
   var heroGrid = document.querySelector('.hero__inner');
   if (!heroGrid) return;
@@ -84,6 +97,18 @@
   intro.appendChild(el('p', 'networks__lede', confirmed.length === 1
     ? 'A state program that supports SBIR and STTR companies brings me in when the technical side has to be right.'
     : 'The state programs that support SBIR and STTR companies bring me in when the technical side has to be right.'));
+  // Pinned badge for featured programs once the carousel can rotate their card out of view
+  if (confirmed.length >= 3) {
+    featured.forEach(function (n) {
+      var badge = el('p', 'networks__featured');
+      badge.appendChild(el('span', 'networks__featured-icon')).setAttribute('aria-hidden', 'true');
+      var text = el('span', 'networks__featured-text');
+      text.appendChild(el('span', 'networks__featured-role', n.role));
+      text.appendChild(el('span', 'networks__featured-org', n.org));
+      badge.appendChild(text);
+      intro.appendChild(badge);
+    });
+  }
   var states = confirmed.map(function (n) { return n.state; }).filter(Boolean);
   if (states.length > 1) intro.appendChild(el('p', 'networks__states', states.join('  ·  ')));
   panel.appendChild(intro);
@@ -108,6 +133,18 @@
   // screen size (see .hero--networks in styles.css), above "The problem"
   heroGrid.appendChild(section);
   heroGrid.closest('.hero').classList.add('hero--networks');
+
+  /* ---------- Hero chip and About line ---------- */
+  var chipList = document.querySelector('.hero .chips');
+  confirmed.forEach(function (n) {
+    if (!n.chip || !chipList) return;
+    var chip = el('li', 'chip chip--featured', n.chip);
+    chipList.insertBefore(chip, chipList.children[1] || null);
+  });
+  var creds = document.querySelector('.about .creds');
+  confirmed.slice().reverse().forEach(function (n) {
+    if (n.about && creds) creds.insertBefore(el('li', 'creds__featured', n.about), creds.firstChild);
+  });
 
   /* ---------- Carousel (3 or more) ---------- */
   function buildCarousel(host, items) {

@@ -693,6 +693,20 @@ h3 {
   background: var(--aurora-teal);
   box-shadow: 0 0 8px var(--aurora-teal);
 }
+/* Featured chip (added by networks.js from a confirmed program's "chip" field) */
+.chip--featured {
+  color: var(--text-hi);
+  border-color: rgba(61, 220, 208, 0.55);
+  background: linear-gradient(180deg, rgba(61, 220, 208, 0.16), rgba(61, 220, 208, 0.05)), rgba(8, 11, 26, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 22px -6px rgba(61, 220, 208, 0.55);
+}
+.chip--featured::before {
+  width: 7px; height: 7px;
+  border-radius: 1px;
+  transform: rotate(45deg);
+  background: var(--grad-legible);
+  box-shadow: 0 0 10px rgba(61, 220, 208, 0.8);
+}
 
 /* Hero visual: magnetic field lines + pipeline log */
 .hero__visual {
@@ -938,6 +952,55 @@ h3 {
   line-height: 1.65;
   color: var(--text-mid);
 }
+/* Pinned featured program, always visible beside the carousel */
+.networks__featured {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 100%;
+  margin-top: 22px;
+  padding: 12px 18px 12px 16px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(61, 220, 208, 0.12), rgba(61, 220, 208, 0.03)), rgba(8, 11, 26, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 0 30px -10px rgba(61, 220, 208, 0.55);
+}
+.networks__featured::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(120deg, rgba(61, 220, 208, 0.8), rgba(206, 0, 255, 0.45) 60%, rgba(222, 35, 158, 0.6));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+.networks__featured-icon {
+  flex: none;
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  background: var(--grad-legible);
+  box-shadow: 0 0 12px rgba(61, 220, 208, 0.8);
+}
+.networks__featured-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.networks__featured-role {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aurora-teal);
+}
+.networks__featured-org {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-hi);
+}
+
 .networks__states {
   margin-top: 18px;
   font-family: var(--font-mono);
@@ -1588,6 +1651,10 @@ h3 {
   background: var(--aurora-teal);
   box-shadow: 0 0 6px var(--aurora-teal);
 }
+/* Program line added by networks.js from a confirmed program's "about" field */
+.creds .creds__featured { color: var(--text-hi); }
+.creds .creds__featured::before { background: var(--grad-legible); width: 12px; }
+
 .about__portrait {
   position: relative;
   display: flex;
@@ -1710,7 +1777,7 @@ h3 {
   text-transform: uppercase;
   color: var(--text-mid);
 }
-.form-field__opt { text-transform: none; letter-spacing: 0.02em; color: var(--text-lo); margin-left: 6px; }
+.form-field__opt { text-transform: none; letter-spacing: 0.02em; color: var(--text-mid); margin-left: 6px; }
 .form-field input,
 .form-field select,
 .form-field textarea {
