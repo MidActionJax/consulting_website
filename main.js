@@ -146,53 +146,101 @@
     });
   }
 
-  /* ---------- Copy email + toast ---------- */
-  var toast = document.querySelector('.toast');
-  var toastTimer;
-  function showToast(msg) {
-    if (!toast) return;
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
-      toast.classList.remove('show');
-      setTimeout(function () { toast.textContent = ''; }, 300);
-    }, 2200);
-  }
-  function fallbackCopy(text) {
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    var ok = false;
-    try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
-    document.body.removeChild(ta);
-    return ok;
-  }
-  document.querySelectorAll('[data-copy]').forEach(function (btn) {
-    var label = btn.querySelector('span');
-    btn.addEventListener('click', function () {
-      var text = btn.getAttribute('data-copy');
-      function done(ok) {
-        if (!ok) { showToast('Copy failed. Select the address instead.'); return; }
-        btn.classList.add('copied');
-        if (label) label.textContent = 'Copied';
-        showToast('Copied');
-        setTimeout(function () {
-          btn.classList.remove('copied');
-          if (label) label.textContent = 'Copy';
-        }, 2200);
-      }
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
-      } else {
-        done(fallbackCopy(text));
-      }
+  /* ---------- Contact form ----------
+     Posts to Formspree so the email address never appears in the page. Until a
+     form ID is set in the form's action, it falls back to opening the visitor's
+     mail app, with the address assembled here at click time (scrapers don't run JS). */
+  var form = document.getElementById('contact-form');
+  var sent = document.getElementById('form-sent');
+  function inbox() { return ['jaxonjdoolittle', 'gmail.com'].join('@'); }
+
+  // Links like "Talk about your proposal" pre-select a topic
+  document.querySelectorAll('a[href="#contact"]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (!form) return;
+      var topic = a.getAttribute('data-topic');
+      if (topic) form.elements.topic.value = topic;
     });
   });
+
+  if (form) {
+    var statusEl = form.querySelector('.form-status');
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var submitLabel = submitBtn.querySelector('.btn__label');
+    var configured = !/YOUR_FORM_ID/.test(form.getAttribute('action'));
+
+    var setStatus = function (msg, kind) {
+      statusEl.textContent = msg;
+      statusEl.className = 'form-status form-field--full' + (kind ? ' form-status--' + kind : '');
+    };
+    var mailtoFallback = function () {
+      var f = form.elements;
+      var body = f.message.value + '\n\n' + f.name.value +
+        (f.organization.value ? ', ' + f.organization.value : '') + '\n' + f.email.value;
+      window.location.href = 'mailto:' + inbox() +
+        '?subject=' + encodeURIComponent('Website inquiry: ' + f.topic.value) +
+        '&body=' + encodeURIComponent(body);
+    };
+    var showSent = function () {
+      form.hidden = true;
+      sent.hidden = false;
+      sent.focus();
+    };
+
+    // The browser's own validation stops the submit before our handler runs,
+    // so mark the form and explain from its invalid event instead.
+    form.addEventListener('invalid', function () {
+      form.classList.add('was-validated');
+      setStatus('Please fill in your name, a valid email and a message.', 'error');
+    }, true);
+    form.addEventListener('input', function () {
+      if (form.classList.contains('was-validated') && form.checkValidity()) setStatus('', '');
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        var bad = form.querySelector(':invalid');
+        if (bad) bad.focus();
+        setStatus('Please fill in your name, a valid email and a message.', 'error');
+        return;
+      }
+      var f = form.elements;
+      f._subject.value = 'Website inquiry: ' + f.topic.value + ' (' + f.name.value + ')';
+
+      if (!configured) {
+        setStatus('Opening your email app with this message filled in.', '');
+        mailtoFallback();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitLabel.textContent = 'Sending...';
+      setStatus('', '');
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      }).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        form.reset();
+        showSent();
+      }).catch(function () {
+        setStatus('', 'error');
+        statusEl.appendChild(document.createTextNode("That didn't go through. Try again in a minute, or "));
+        var link = document.createElement('a');
+        link.href = '#';
+        link.textContent = 'send it from your email app';
+        link.addEventListener('click', function (ev) { ev.preventDefault(); mailtoFallback(); });
+        statusEl.appendChild(link);
+        statusEl.appendChild(document.createTextNode('.'));
+      }).then(function () {
+        submitBtn.disabled = false;
+        submitLabel.textContent = 'Send message';
+      });
+    });
+  }
 
   /* ---------- One pager: hide the download links until the PDF is uploaded ---------- */
   var onePagers = document.querySelectorAll('[data-onepager]');
