@@ -36,7 +36,18 @@
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
   <link rel="stylesheet" href="styles.css">
 
-  <script>document.documentElement.classList.add('js');</script>
+  <script>
+    /* Runs before first paint: start in lite mode if a recent visit measured this device as slow. ?full overrides. */
+    (function (d) {
+      d.classList.add('js');
+      if (/[?&]full(?:[=&]|$)/.test(location.search)) return;
+      try {
+        var s = JSON.parse(localStorage.getItem('perf-mode') || 'null');
+        if (s && s.mode === 'lite' && s.until > Date.now()) d.classList.add('lite');
+        else if (s) localStorage.removeItem('perf-mode');
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
   <script src="main.js" defer></script>
 
   <script type="application/ld+json">

@@ -206,13 +206,71 @@
     }, function () { /* network error: leave the links alone */ });
   }
 
+  /* ---------- Adaptive quality ----------
+     1s after the page has fully loaded, count frames for two 1-second windows.
+     If both come in under 45fps, switch to lite mode and remember it for 7 days.
+     ?full in the URL forces full mode and skips the check. */
+  var FORCE_FULL = /[?&]full(?:[=&]|$)/.test(location.search);
+  var PERF_KEY = 'perf-mode';
+  var LITE_MS = 7 * 24 * 60 * 60 * 1000;
+  var MIN_FPS = 45;
+
+  function isLite() { return root.classList.contains('lite'); }
+  function enableLite() {
+    if (isLite()) return;
+    root.classList.add('lite');
+    try {
+      localStorage.setItem(PERF_KEY, JSON.stringify({ mode: 'lite', until: Date.now() + LITE_MS }));
+    } catch (e) {}
+    document.dispatchEvent(new CustomEvent('perfmodechange'));
+  }
+  function measureFps() {
+    if (document.hidden) {
+      // rAF doesn't run in a background tab, so wait until the page is visible again
+      document.addEventListener('visibilitychange', function retry() {
+        if (document.hidden) return;
+        document.removeEventListener('visibilitychange', retry);
+        setTimeout(measureFps, 1000);
+      });
+      return;
+    }
+    var windows = [], frames = 0, windowStart = 0, aborted = false;
+    function onHide() { if (document.hidden) aborted = true; }
+    document.addEventListener('visibilitychange', onHide);
+    function finish() {
+      document.removeEventListener('visibilitychange', onHide);
+      if (aborted) { measureFps(); return; }
+      root.setAttribute('data-fps', windows.map(function (f) { return Math.round(f); }).join(','));
+      if (windows[0] < MIN_FPS && windows[1] < MIN_FPS) enableLite();
+    }
+    function tick(t) {
+      if (aborted) { finish(); return; }
+      if (!windowStart) { windowStart = t; requestAnimationFrame(tick); return; }
+      frames++;
+      if (t - windowStart >= 1000) {
+        windows.push(frames * 1000 / (t - windowStart));
+        frames = 0;
+        windowStart = t;
+      }
+      if (windows.length < 2) requestAnimationFrame(tick); else finish();
+    }
+    requestAnimationFrame(tick);
+  }
+  if (FORCE_FULL) {
+    root.classList.remove('lite');
+  } else if (!isLite()) {
+    var scheduleMeasure = function () { setTimeout(measureFps, 1000); };
+    if (document.readyState === 'complete') scheduleMeasure();
+    else window.addEventListener('load', scheduleMeasure);
+  }
+
   /* ---------- Hero particle field (solar wind) ---------- */
   var canvas = document.querySelector('.hero__particles');
   if (canvas && !prefersReduced && canvas.getContext) {
     var ctx = canvas.getContext('2d');
     var hero = canvas.parentElement;
     var particles = [];
-    var W = 0, H = 0, dpr = 1;
+    var W = 0, H = 0, dpr = 1, lite = false;
     var running = false, visible = true, rafId = 0, last = 0;
     var LINK = 110;
     var FRAME = 1000 / 60;
@@ -237,13 +295,15 @@
     }
     function resize() {
       var rect = hero.getBoundingClientRect();
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      lite = isLite();
+      dpr = lite ? 1 : Math.min(window.devicePixelRatio || 1, 2);
       W = rect.width;
       H = rect.height;
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       var count = W < 700 ? 34 : W < 1100 ? 52 : 70;
+      if (lite) count = Math.min(count, 25);
       particles.length = 0;
       for (var i = 0; i < count; i++) particles.push(makeParticle(true));
     }
@@ -259,7 +319,7 @@
         if (p.y > H + 10) p.y = -10;
       }
       ctx.lineWidth = 0.6;
-      for (i = 0; i < n; i++) {
+      for (i = 0; i < n && !lite; i++) {
         p = particles[i];
         for (j = i + 1; j < n; j++) {
           q = particles[j];
@@ -286,8 +346,11 @@
     function loop(t) {
       if (!running) return;
       rafId = requestAnimationFrame(loop);
-      if (t - last < FRAME - 1) return; // cap at 60fps on high-refresh screens
-      last = t;
+      // Cap at 60fps on high-refresh screens. Carrying the remainder keeps the
+      // cadence at a true 60 (a plain "last = t" lets 144Hz screens run at 72).
+      var elapsed = t - last;
+      if (elapsed < FRAME - 0.5) return;
+      last = elapsed > FRAME * 4 ? t : t - (elapsed % FRAME);
       draw();
     }
     function start() {
@@ -310,6 +373,7 @@
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) stop(); else start();
     });
+    document.addEventListener('perfmodechange', resize);
     if (hasIO) {
       new IntersectionObserver(function (entries) {
         visible = entries[0].isIntersecting;
