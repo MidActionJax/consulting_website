@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Page not found | Jaxon Doolittle</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#05070f">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+  <!-- Root-relative paths so this page styles correctly at any missing URL depth.
+       If the site is served from a project subpath (username.github.io/repo/), change "/" to "/repo/". -->
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .nf { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
+    .nf__card { max-width: 560px; width: 100%; padding: clamp(36px, 7vw, 56px); text-align: center; overflow: hidden; }
+    .nf__code {
+      font-family: var(--font-mono); font-size: clamp(4rem, 16vw, 6.5rem); font-weight: 500;
+      line-height: 1; letter-spacing: -0.05em; margin-bottom: 20px;
+      background: linear-gradient(120deg, var(--aurora-crimson) 10%, var(--aurora-pink) 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 0 28px rgba(209, 46, 83, 0.45));
+    }
+    .nf__card h1 { font-size: clamp(1.6rem, 4.5vw, 2.1rem); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 32px; text-wrap: balance; }
+    .nf__glow { position: absolute; left: 50%; top: 0; width: 80%; height: 70%; transform: translate(-50%, -55%);
+      border-radius: 50%; background: radial-gradient(closest-side, rgba(209, 46, 83, 0.3), transparent); pointer-events: none; }
+    .nf__card > *:not(.nf__glow):not(.corner) { position: relative; }
+    .nf .corner { border-color: rgba(209, 46, 83, 0.8); }
+    .nf .blob--pink { opacity: 0.3; }
+  </style>
+</head>
+<body>
+  <div class="sky" aria-hidden="true">
+    <div class="stars"></div>
+    <div class="aurora">
+      <span class="blob blob--teal"></span>
+      <span class="blob blob--violet"></span>
+      <span class="blob blob--magenta"></span>
+      <span class="blob blob--pink"></span>
+      <span class="blob blob--plum"></span>
+    </div>
+    <div class="grain"></div>
+  </div>
+  <main class="nf">
+    <div class="nf__card glass">
+      <span class="nf__glow" aria-hidden="true"></span>
+      <p class="nf__code" aria-hidden="true">404</p>
+      <h1>This page failed silently. Unlike your pipeline will.</h1>
+      <a class="btn btn--primary" href="/">Back to the homepage</a>
+      <span class="corner corner--tl"></span><span class="corner corner--tr"></span>
+      <span class="corner corner--bl"></span><span class="corner corner--br"></span>
+    </div>
+  </main>
+</body>
+</html>
