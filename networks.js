@@ -24,7 +24,7 @@
       org: "Wisconsin Center for Technology Commercialization", state: "WI",
       role: "Expert Panel Reviewer",
       detail: "Sits on expert panels that pressure-test SBIR proposals before they're submitted.",
-      confirmed: false,
+      confirmed: true,
     },
     {
       org: "Arizona Commerce Authority", state: "AZ",
@@ -80,8 +80,10 @@
   title.appendChild(document.createTextNode('The programs that back '));
   title.appendChild(el('span', 'text-grad', 'SBIR founders'));
   intro.appendChild(title);
-  intro.appendChild(el('p', 'networks__lede',
-    'The state programs that support SBIR and STTR companies bring me in when the technical side has to be right.'));
+  // Singular while only one program is listed, so the line never claims more than is on the page
+  intro.appendChild(el('p', 'networks__lede', confirmed.length === 1
+    ? 'A state program that supports SBIR and STTR companies brings me in when the technical side has to be right.'
+    : 'The state programs that support SBIR and STTR companies bring me in when the technical side has to be right.'));
   var states = confirmed.map(function (n) { return n.state; }).filter(Boolean);
   if (states.length > 1) intro.appendChild(el('p', 'networks__states', states.join('  ·  ')));
   panel.appendChild(intro);
