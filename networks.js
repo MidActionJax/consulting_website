@@ -21,6 +21,12 @@
   //   featured / chip / about: optional, see the top of this file
   var PROGRAM_NETWORKS = [
     {
+      org: "OK Catalyst", state: "OK",
+      role: "Listed Service Provider",
+      detail: "On the service provider list for Oklahoma's SBIR and STTR support program.",
+      confirmed: true,
+    },
+    {
       org: "Hawaii Technology Development Corporation", state: "HI",
       role: "Listed Technical Expert",
       detail: "Named on the list Hawaii founders use to find technical help for SBIR work.",
