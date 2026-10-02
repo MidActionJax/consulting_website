@@ -24,7 +24,7 @@
       org: "OK Catalyst", state: "OK",
       role: "Listed Service Provider",
       detail: "On the service provider list for Oklahoma's SBIR and STTR support program.",
-      confirmed: false,
+      confirmed: true,
     },
     {
       org: "Hawaii Technology Development Corporation", state: "HI",
