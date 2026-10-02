@@ -45,7 +45,7 @@
       org: "Arizona Commerce Authority", state: "AZ",
       role: "Recommended Technical Expert",
       detail: "Arizona founders are pointed my way when their SBIR work needs a technical lead.",
-      confirmed: false,
+      confirmed: true,
     },
   ];
 
