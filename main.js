@@ -2,6 +2,11 @@
 (function () {
   'use strict';
 
+  /* ---------- Config ---------- */
+  // Number of states whose SBIR support programs share my contact with companies.
+  // Shown in the referral strip under the hero. Also update the fallback "4" in index.html.
+  var REFERRAL_STATE_COUNT = 4;
+
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var prefersReduced = reduceMotion.matches;
@@ -144,6 +149,17 @@
     lines.forEach(function (l, i) {
       setTimeout(function () { l.classList.add('on'); }, delays[i] || 500 + i * 400);
     });
+  }
+
+  /* ---------- Referral strip count ---------- */
+  var referral = document.querySelector('.referral');
+  if (referral) {
+    if (!(REFERRAL_STATE_COUNT >= 1)) {
+      referral.hidden = true;
+    } else {
+      document.querySelectorAll('[data-referral-count]').forEach(function (n) { n.textContent = String(REFERRAL_STATE_COUNT); });
+      document.querySelectorAll('[data-referral-unit]').forEach(function (n) { n.textContent = REFERRAL_STATE_COUNT === 1 ? 'state' : 'states'; });
+    }
   }
 
   /* ---------- Contact form ----------

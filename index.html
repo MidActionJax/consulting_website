@@ -47,7 +47,6 @@
       } catch (e) {}
     })(document.documentElement);
   </script>
-  <script src="networks.js" defer></script>
   <script src="main.js" defer></script>
 
   <script type="application/ld+json">
@@ -146,6 +145,17 @@
           </ul>
         </div>
 
+        <section class="referral reveal" aria-labelledby="referral-title">
+          <div class="referral__strip glass">
+            <div class="referral__main">
+              <p class="eyebrow referral__eyebrow">// REFERRAL NETWORK</p>
+              <!-- The number comes from REFERRAL_STATE_COUNT at the top of main.js; keep this fallback in step with it -->
+              <h2 id="referral-title" class="referral__title">Referral resource for SBIR support programs in <span class="referral__count"><span data-referral-count>4</span> <span data-referral-unit>states</span></span></h2>
+            </div>
+            <p class="referral__note">State SBIR offices, SBDCs, and commercialization programs share my contact with companies that need technical help. Programs are not named here and do not endorse any provider.</p>
+          </div>
+        </section>
+
         <div class="hero__visual rise" style="--i:6" aria-hidden="true">
           <svg class="field" viewBox="0 0 600 600" focusable="false">
             <defs>
@@ -196,10 +206,6 @@
         </div>
       </div>
 
-      <a class="scroll-cue" href="#problem" aria-label="Scroll to the next section">
-        <span class="mono">SCROLL</span>
-        <span class="scroll-cue__line" aria-hidden="true"></span>
-      </a>
     </section>
 
     <!-- ============ THE PROBLEM ============ -->
@@ -449,7 +455,6 @@
               <p>Before that I spent about two and a half years building an AI-driven security awareness platform for enterprise clients.</p>
               <p>Based in Peoria, Arizona. Working remotely with teams nationally.</p>
             </div>
-            <!-- Program reviewer and provider lines are added here by networks.js (the "about" field) once confirmed -->
             <ul class="creds mono" role="list" aria-label="Credentials">
               <li>MS Computer Science, in progress, Georgia Southwestern State University</li>
               <li>BAS Information Technology</li>
