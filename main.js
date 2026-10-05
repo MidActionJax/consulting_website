@@ -5,10 +5,10 @@
   /* ---------- Config ---------- */
   // Number of states whose SBIR support programs share my contact with companies.
   // Shown in the Referral network headline. Also update the fallback number in index.html.
-  const REFERRAL_STATE_COUNT = 6;
+  const REFERRAL_STATE_COUNT = 7;
   // States OK to show on the map (postal codes). Only list a state once its program
   // has agreed to the state being shown. Programs are never named.
-  const MAP_STATES = ["OK","HI","MI","WI","AZ"];   // states OK to show on the map
+  const MAP_STATES = ["OK","MI","WI","AZ"];   // states OK to show on the map
 
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
