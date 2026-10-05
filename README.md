@@ -18,9 +18,14 @@ CNAME             custom domain for GitHub Pages (added on GitHub, keep it)
 
 The contact form posts to Formspree (form `meaodvov`, formspree.io dashboard) and lands in Gmail.
 
-## Referral strip
+## Referral network
 
-The strip under the hero chips reads "Referral resource for SBIR support programs in N states". Change `REFERRAL_STATE_COUNT` at the top of `main.js` to update N (and the fallback number in `index.html`, shown when JavaScript is off). Programs are deliberately not named on the site.
+The section under the hero chips reads "Referral resource for SBIR support programs in N states" and shows a US map. Both are set at the top of `main.js`:
+
+- `REFERRAL_STATE_COUNT`: the N in the headline (also update the fallback number in `index.html`, shown when JavaScript is off).
+- `MAP_STATES`: postal codes of the states highlighted on the map. Only add a state once its program has agreed to the state being shown. If the map shows fewer states than the headline counts, a small caption says so.
+
+Programs are never named on the site. The map outlines come from the U.S. Census Bureau's 2017 cartographic boundary files (public domain), via the `us-atlas` package, converted to static SVG paths inline in `index.html`.
 
 ## Still to do
 

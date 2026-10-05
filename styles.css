@@ -846,18 +846,19 @@ h3 {
   .hero__visual { grid-row: 1; grid-column: 2; }
   .referral { grid-row: 2; }
 }
-.referral__strip {
-  --glass-tint: rgba(8, 11, 26, 0.74); /* a little darker so the small note keeps AA over the aurora */
+.referral__panel {
+  --glass-tint: rgba(8, 11, 26, 0.84); /* darker than other glass so the small note keeps AA over the bright teal aurora */
   position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)), var(--glass-tint);
   overflow: hidden;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px 40px;
+  gap: clamp(20px, 3vw, 40px);
   align-items: center;
-  padding: clamp(20px, 2.6vw, 26px) clamp(18px, 3vw, 32px);
-  border-radius: 18px;
+  padding: clamp(22px, 3.4vw, 40px) clamp(18px, 3.4vw, 44px);
+  border-radius: 22px;
 }
-.referral__strip::before {
+.referral__panel::before {
   content: "";
   position: absolute;
   left: 6%; right: 6%; top: 0;
@@ -868,32 +869,68 @@ h3 {
   opacity: 0.7;
   pointer-events: none;
 }
-/* Wide screens: the main line stays on one line with the note beside it.
-   Narrower screens stack the note underneath. */
-@media (min-width: 1200px) {
-  .referral__strip { grid-template-columns: auto minmax(0, 1fr); }
-  .referral__title { white-space: nowrap; }
-  .referral__note {
-    padding-left: 32px;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-  }
+@media (min-width: 960px) {
+  .referral__panel { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
 }
-.referral__main { min-width: 0; }
-.referral__eyebrow { margin-bottom: 10px; }
+.referral__copy { min-width: 0; }
+.referral__eyebrow { margin-bottom: 12px; }
 .referral__title {
-  font-size: clamp(1.25rem, 2.1vw, 1.6rem);
+  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
   font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -0.015em;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
   text-wrap: balance;
+  margin-bottom: 14px;
 }
 .referral__count { color: var(--aurora-teal); white-space: nowrap; }
 .referral__note {
-  max-width: 46em;
+  max-width: 40em;
   font-size: 0.9rem;
   line-height: 1.6;
   color: var(--text-lo);
 }
+
+/* Map */
+.referral__map {
+  min-width: 0;
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+}
+.usmap {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.map-state {
+  fill: rgba(255, 255, 255, 0.03);
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.map-state.is-on {
+  fill: url(#mapGrad);
+  fill-opacity: 0.7;
+  stroke: rgba(61, 220, 208, 0.55);
+  filter: url(#mapGlow);
+  animation: map-pulse 4.5s ease-in-out infinite alternate;
+}
+@keyframes map-pulse {
+  from { opacity: 0.72; }
+  to   { opacity: 1; }
+}
+.lite .map-state.is-on { animation: none; }
+.referral__caption {
+  margin-top: 10px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--text-lo);
+}
+.referral__caption[hidden] { display: none; }
 
 /* ---------- Problem cards ---------- */
 .icon {
@@ -1683,6 +1720,7 @@ h3 {
   .rise,
   .js .terminal .t-line { opacity: 1 !important; transform: none !important; animation: none !important; }
   .js .dossier .dossier__bar i { transform: none !important; }
+  .map-state.is-on { animation: none !important; opacity: 1; }
 }
 
 /* ---------- Small screens ---------- */

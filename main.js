@@ -4,8 +4,11 @@
 
   /* ---------- Config ---------- */
   // Number of states whose SBIR support programs share my contact with companies.
-  // Shown in the referral strip under the hero. Also update the fallback "4" in index.html.
-  var REFERRAL_STATE_COUNT = 4;
+  // Shown in the Referral network headline. Also update the fallback number in index.html.
+  const REFERRAL_STATE_COUNT = 6;
+  // States OK to show on the map (postal codes). Only list a state once its program
+  // has agreed to the state being shown. Programs are never named.
+  const MAP_STATES = ["OK","HI","MI","WI","AZ"];   // states OK to show on the map
 
   var root = document.documentElement;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -151,7 +154,7 @@
     });
   }
 
-  /* ---------- Referral strip count ---------- */
+  /* ---------- Referral network: headline count and map ---------- */
   var referral = document.querySelector('.referral');
   if (referral) {
     if (!(REFERRAL_STATE_COUNT >= 1)) {
@@ -159,6 +162,32 @@
     } else {
       document.querySelectorAll('[data-referral-count]').forEach(function (n) { n.textContent = String(REFERRAL_STATE_COUNT); });
       document.querySelectorAll('[data-referral-unit]').forEach(function (n) { n.textContent = REFERRAL_STATE_COUNT === 1 ? 'state' : 'states'; });
+
+      var mapGroup = referral.querySelector('.usmap__states');
+      var mapList = referral.querySelector('[data-map-list]');
+      var shown = [];
+      if (mapGroup) {
+        MAP_STATES.forEach(function (code) {
+          var state = mapGroup.querySelector('#' + String(code).toUpperCase().replace(/[^A-Z]/g, ''));
+          if (!state || state.classList.contains('is-on')) return;
+          state.classList.add('is-on');
+          mapGroup.appendChild(state); // draw highlighted states last so their glow sits on top
+          shown.push(state.getAttribute('data-name'));
+        });
+      }
+      if (mapList) {
+        shown.forEach(function (name) {
+          var li = document.createElement('li');
+          li.textContent = name;
+          mapList.appendChild(li);
+        });
+      }
+      // Say so when the map shows fewer states than the headline counts
+      var caption = referral.querySelector('[data-map-caption]');
+      if (caption && shown.length && shown.length < REFERRAL_STATE_COUNT) {
+        caption.textContent = 'Map shows ' + shown.length + ' of ' + REFERRAL_STATE_COUNT + ' states';
+        caption.hidden = false;
+      }
     }
   }
 
